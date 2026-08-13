@@ -1,0 +1,8 @@
+# Unused source videos (not referenced by index.html) — excluded to keep the repo lean.
+/new.mp4
+/agentverse emas final.mp4
+/jarvis futur.mp4
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store
