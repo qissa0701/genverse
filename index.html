@@ -706,6 +706,295 @@
     .page-model .model-wrap { max-height: calc(100vh - 6rem); overflow-y: auto; }
   }
 
+  /* ═══ Section: Agentverse Eras — three horizontal slides ══════════ */
+  .page-eras {
+    padding: 0;
+    color: #0f2438;
+    background:
+      radial-gradient(900px 520px at 50% -10%, rgba(120,180,255,0.35), transparent 60%),
+      radial-gradient(700px 480px at 100% 120%, rgba(150,200,255,0.30), transparent 60%),
+      linear-gradient(160deg, #eaf3ff 0%, #d6e8ff 55%, #cfe2fb 100%);
+  }
+  /* Nav arrows adopt a dark theme so they read on the light-blue stage. */
+  .page-eras .scroll-arrow,
+  .page-eras .scroll-arrow-up {
+    z-index: 30;
+    background: rgba(15, 40, 70, 0.10);
+    color: #0f2438;
+  }
+  .page-eras .scroll-arrow:hover,
+  .page-eras .scroll-arrow-up:hover { background: rgba(15, 40, 70, 0.20); }
+
+  /* Horizontal track that holds the three era slides side by side. */
+  /* Track sits below the year strip. */
+  .eras-track {
+    position: absolute;
+    inset: clamp(9rem, 20vh, 12rem) 0 0;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .eras-track::-webkit-scrollbar { display: none; }
+
+  /* ── Year strip / indicator above the carousel ── */
+  .eras-header {
+    position: absolute;
+    top: clamp(2.6rem, 5vh, 3.6rem);
+    left: 0; right: 0;
+    z-index: 26;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0 clamp(2rem, 6vw, 5rem);
+    pointer-events: none;
+  }
+  .era-tab {
+    pointer-events: auto;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    color: #0f2438;
+    transition: opacity 0.35s ease;
+  }
+  .era-tab .et-eyebrow {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #2f6fb0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .era-tab .et-year {
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: rgba(15, 40, 70, 0.24);
+    transition: color 0.35s ease, transform 0.35s ease;
+  }
+  .era-tab .et-tag {
+    font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+    font-weight: 600;
+    font-style: italic;
+    color: #1c4b7a;
+    margin-top: 0.35rem;
+    max-width: 22ch;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  /* Center / right tabs keep their tagline aligned under the year. */
+  .era-tab[data-i="1"] .et-tag { align-self: center; text-align: center; }
+  .era-tab[data-i="2"] .et-tag { align-self: flex-end; text-align: right; }
+
+  .era-tab.is-active .et-eyebrow { opacity: 1; }
+  .era-tab.is-active .et-year { color: #0f2438; }
+  .era-tab.is-active .et-tag { opacity: 1; transform: translateY(0); }
+  .era-tab:not(.is-active):hover .et-year { color: rgba(15, 40, 70, 0.45); }
+
+  @media (max-width: 720px) {
+    .era-tab .et-tag { display: none; }
+    .eras-header { top: 3.4rem; }
+  }
+
+  .era-slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding: clamp(3.5rem, 7vh, 5rem) clamp(3rem, 8vw, 7rem);
+  }
+  @media (max-width: 900px) {
+    .era-slide {
+      flex-direction: column;
+      gap: 1.1rem;
+      padding: 4.5rem 1.4rem 5.5rem;
+      overflow-y: auto;
+      justify-content: flex-start;
+    }
+  }
+
+  /* ── Left: framed placeholder image (polaroid / comic-panel look) ── */
+  .era-figure {
+    flex: 0 0 auto;
+    width: min(46%, 500px);
+    margin: 0;
+  }
+  @media (max-width: 900px) { .era-figure { width: min(82%, 380px); } }
+
+  .era-frame {
+    position: relative;
+    background: #fff;
+    border: 6px solid #0f2438;
+    border-radius: 5px;
+    padding: 10px 10px 46px;
+    box-shadow: 12px 12px 0 rgba(15, 40, 70, 0.28);
+    transform: rotate(-3deg);
+    transition: transform 0.4s cubic-bezier(0.2, 1.3, 0.4, 1), box-shadow 0.4s ease;
+  }
+  .era-slide:nth-child(even) .era-frame { transform: rotate(3deg); }
+  .era-frame:hover {
+    transform: rotate(0deg) translateY(-6px) scale(1.02);
+    box-shadow: 18px 22px 34px rgba(15, 40, 70, 0.35);
+  }
+
+  .era-ph {
+    aspect-ratio: 4 / 5;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #6a86a6;
+    background: linear-gradient(135deg, #eef5ff 0%, #dbe9fb 100%);
+    border: 1.5px dashed rgba(15, 40, 70, 0.28);
+    overflow: hidden;
+  }
+  .era-ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .era-ph span {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .era-cap {
+    position: absolute;
+    left: 0; right: 0; bottom: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    color: #0f2438;
+  }
+
+  /* ── Right: the era's story, features and metrics ── */
+  .era-content {
+    flex: 1 1 auto;
+    max-width: 620px;
+    max-height: 100%;
+  }
+  .era-intro {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: #274b68;
+    margin-bottom: 1.6rem;
+    max-width: 520px;
+  }
+
+  /* Clean, borderless feature list — no bullet markers, generous spacing. */
+  .era-features {
+    list-style: none;
+    display: grid;
+    gap: 0.9rem;
+    margin: 0 0 1.8rem;
+  }
+  .era-features li {
+    font-size: 0.98rem;
+    line-height: 1.45;
+    color: #22496a;
+  }
+  .era-features li b { color: #0f2438; font-weight: 600; }
+
+  /* Metrics as a light, understated row — no heavy box. */
+  .era-metrics {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.9rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(15, 40, 70, 0.15);
+  }
+  .era-metrics .m-h {
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #2f6fb0;
+    font-weight: 700;
+  }
+  .era-metrics ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem 1.4rem; }
+  .era-metrics li {
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #17364f;
+  }
+  .era-metrics li + li::before {
+    content: "";
+    position: absolute;
+    left: -0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(15, 40, 70, 0.35);
+  }
+
+  /* Horizontal navigation arrows (left / right). */
+  .era-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 25;
+    width: 3rem; height: 3rem;
+    border: none; border-radius: 50%;
+    background: rgba(15, 40, 70, 0.12);
+    color: #0f2438;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .era-nav:hover { background: rgba(15, 40, 70, 0.24); }
+  .era-nav:active { transform: translateY(-50%) scale(0.92); }
+  .era-nav svg {
+    width: 1.4rem; height: 1.4rem;
+    fill: none; stroke: currentColor; stroke-width: 2.5;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .era-prev { left: 1.2rem; }
+  .era-next { right: 1.2rem; }
+  .era-prev svg { transform: rotate(90deg); }
+  .era-next svg { transform: rotate(-90deg); }
+  .era-nav[disabled] { opacity: 0.3; cursor: default; }
+
+  /* Entrance: the current slide's figure + content stagger in. */
+  .era-figure,
+  .era-content > * {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.18, 1.1, 0.35, 1);
+  }
+  .era-figure { transform: translateY(0) scale(0.9); }
+  .era-slide.is-current .era-figure { opacity: 1; transform: translateY(0) scale(1); }
+  .era-slide.is-current .era-content > * { opacity: 1; transform: translateY(0); }
+  .era-slide.is-current .era-content > *:nth-child(1) { transition-delay: 0.05s; }
+  .era-slide.is-current .era-content > *:nth-child(2) { transition-delay: 0.12s; }
+  .era-slide.is-current .era-content > *:nth-child(3) { transition-delay: 0.19s; }
+  .era-slide.is-current .era-content > *:nth-child(4) { transition-delay: 0.26s; }
+  .era-slide.is-current .era-content > *:nth-child(5) { transition-delay: 0.33s; }
+  .era-slide.is-current .era-content > *:nth-child(6) { transition-delay: 0.40s; }
+  .era-slide.is-current .era-content > *:nth-child(7) { transition-delay: 0.47s; }
+
+  @media (max-width: 900px) {
+    .era-figure { transform: translateY(22px) scale(0.94); }
+    .era-metrics ul { gap: 0.4rem; }
+  }
+
   /* ═══ Page: The Future of Jarvis ══════════════════════════════════ */
   .page-future {
     padding: 4.5rem clamp(1.5rem, 5vw, 4rem);
@@ -739,8 +1028,10 @@
       radial-gradient(800px 520px at 100% 120%, rgba(184,150,255,0.16), transparent 60%),
       linear-gradient(160deg, #0a0f24 0%, #141033 60%, #1c1140 100%);
   }
-  /* 9th child = closing statement: blank black. */
-  .page:nth-child(9) { background: #0a0a0c; }
+  /* 9th child = Agentverse eras slides; sets its own light-blue background
+     in the .page-eras rules below. */
+  /* 10th child = closing statement: blank black. */
+  .page:nth-child(10) { background: #0a0a0c; }
 
   /* Next-page arrow */
   .scroll-arrow {
@@ -1035,6 +1326,124 @@
     </button>
   </section>
 
+  <section class="page page-eras" id="page-eras">
+    <button class="scroll-arrow-up" aria-label="Go to previous page">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+
+    <!-- Year strip: lives above the carousel and doubles as the slide
+         indicator. The active year lights up; only its tagline is shown. -->
+    <div class="eras-header" id="erasHeader">
+      <button class="era-tab is-active" data-i="0" style="text-align:left;">
+        <span class="et-eyebrow">Agentverse</span>
+        <span class="et-year">2027</span>
+        <span class="et-tag">Jarvis, the executioner</span>
+      </button>
+      <button class="era-tab" data-i="1" style="text-align:center;">
+        <span class="et-eyebrow">Agentverse</span>
+        <span class="et-year">2030</span>
+        <span class="et-tag">Jarvis, the embedded teammate</span>
+      </button>
+      <button class="era-tab" data-i="2" style="text-align:right;">
+        <span class="et-eyebrow">Agentverse</span>
+        <span class="et-year">2033</span>
+        <span class="et-tag">Jarvis, an extension of us</span>
+      </button>
+    </div>
+
+    <div class="eras-track" id="erasTrack">
+
+      <!-- ── Slide 1: 2027 ── -->
+      <article class="era-slide">
+        <figure class="era-figure">
+          <div class="era-frame">
+            <div class="era-ph"><img src="jarvis 2027 polaroid.png" alt="Jarvis 2027, the executioner"></div>
+            <figcaption class="era-cap">Plan My Day</figcaption>
+          </div>
+        </figure>
+        <div class="era-content">
+          <p class="era-intro">"Plan My Day", grown up. It prepares everything before you open your laptop in the morning.</p>
+          <ul class="era-features">
+            <li>Talk to it to <b>reshape your schedule</b></li>
+            <li>Breaks work into <b>actionable steps</b></li>
+            <li>Turns meeting talk into <b>tasks and reminders</b></li>
+            <li><b>Executes</b> those steps, keeping you in the loop</li>
+          </ul>
+          <div class="era-metrics">
+            <span class="m-h">Success</span>
+            <ul>
+              <li>Productivity up</li>
+              <li>Learns how we work</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Slide 2: 2030 ── -->
+      <article class="era-slide">
+        <figure class="era-figure">
+          <div class="era-frame">
+            <div class="era-ph"><img src="jarvis 2030 polaroid.png" alt="Jarvis 2030, the embedded teammate"></div>
+            <figcaption class="era-cap">In the room</figcaption>
+          </div>
+        </figure>
+        <div class="era-content">
+          <p class="era-intro">It's in the room with you, joining meetings and taking part like any colleague.</p>
+          <ul class="era-features">
+            <li><b>Answers</b> when the room can't</li>
+            <li>Weighs in with its own <b>opinion</b></li>
+            <li><b>Fact-checks</b> and raises its hand</li>
+            <li>Stands in as anyone's <b>digital twin</b></li>
+          </ul>
+          <div class="era-metrics">
+            <span class="m-h">Success</span>
+            <ul>
+              <li>Knowledge always present</li>
+              <li>No timezone blockers</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Slide 3: 2033 ── -->
+      <article class="era-slide">
+        <figure class="era-figure">
+          <div class="era-frame">
+            <div class="era-ph"><img src="jarvis 2033 polaroid.png" alt="Jarvis 2033, an extension of us"></div>
+            <figcaption class="era-cap">Simulate outcomes</figcaption>
+          </div>
+        </figure>
+        <div class="era-content">
+          <p class="era-intro">It grows the top line, not just output &mdash; modelling how we work and the world we work in.</p>
+          <ul class="era-features">
+            <li><b>Simulates</b> big decisions before we make them</li>
+            <li>Surfaces hidden <b>risks and opportunities</b></li>
+            <li>Keeps <b>humans</b> on the calls that matter</li>
+          </ul>
+          <div class="era-metrics">
+            <span class="m-h">Success</span>
+            <ul>
+              <li>Grows the top line</li>
+              <li>De-risked decisions</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <button class="era-nav era-prev" aria-label="Previous era">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <button class="era-nav era-next" aria-label="Next era">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+
+    <button class="scroll-arrow" aria-label="Go to next page">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </section>
+
   <section class="page page-close" id="page-7">
     <button class="scroll-arrow-up" aria-label="Go to previous page">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -1245,6 +1654,65 @@
     }
   }
 
+  // ─── Agentverse eras: three horizontal slides ───────────────────────────
+  // A nested horizontal scroller inside one vertical page. The year strip
+  // above the carousel doubles as the indicator: the active year lights up
+  // and shows its tagline, the others grey out. Nav arrows, year clicks and
+  // direct swiping all stay in sync, and the current slide's content staggers
+  // in via the `is-current` class (replayed on each page entry).
+  const erasPage = document.getElementById('page-eras');
+  const erasTrack = document.getElementById('erasTrack');
+  const eraSlides = erasTrack ? Array.from(erasTrack.querySelectorAll('.era-slide')) : [];
+  const eraTabs = erasPage ? Array.from(erasPage.querySelectorAll('.era-tab')) : [];
+  const erasPageIndex = erasPage ? pages.indexOf(erasPage) : -1;
+  const eraPrevBtn = erasPage ? erasPage.querySelector('.era-prev') : null;
+  const eraNextBtn = erasPage ? erasPage.querySelector('.era-next') : null;
+  let eraIndex = 0;
+
+  eraTabs.forEach((tab, i) => tab.addEventListener('click', () => goEra(i)));
+
+  function markCurrentEra(i) {
+    eraSlides.forEach((s, idx) => s.classList.toggle('is-current', idx === i));
+    eraTabs.forEach((t, idx) => t.classList.toggle('is-active', idx === i));
+    if (eraPrevBtn) eraPrevBtn.disabled = i <= 0;
+    if (eraNextBtn) eraNextBtn.disabled = i >= eraSlides.length - 1;
+  }
+
+  function goEra(i) {
+    if (!erasTrack) return;
+    eraIndex = Math.max(0, Math.min(i, eraSlides.length - 1));
+    erasTrack.scrollTo({ left: erasTrack.clientWidth * eraIndex, behavior: 'smooth' });
+    markCurrentEra(eraIndex);
+  }
+
+  if (erasTrack) {
+    if (eraPrevBtn) eraPrevBtn.addEventListener('click', () => goEra(eraIndex - 1));
+    if (eraNextBtn) eraNextBtn.addEventListener('click', () => goEra(eraIndex + 1));
+    // Keep the year strip + animation in sync when the track is swiped directly.
+    let eraScrollRaf;
+    erasTrack.addEventListener('scroll', () => {
+      if (eraScrollRaf) cancelAnimationFrame(eraScrollRaf);
+      eraScrollRaf = requestAnimationFrame(() => {
+        const i = Math.round(erasTrack.scrollLeft / erasTrack.clientWidth);
+        if (i !== eraIndex) { eraIndex = i; markCurrentEra(i); }
+      });
+    });
+  }
+
+  function syncEras(activeIndex) {
+    if (!erasPage) return;
+    if (activeIndex === erasPageIndex) {
+      eraIndex = 0;
+      if (erasTrack) erasTrack.scrollTo({ left: 0 });
+      // Replay the entrance from scratch on each visit.
+      markCurrentEra(-1);
+      void erasPage.offsetWidth;
+      markCurrentEra(0);
+    } else {
+      markCurrentEra(-1);
+    }
+  }
+
   // Highlight the active dot based on which page is in view, and drive the
   // per-page media session for whichever page just became active.
   let currentActive = -1;
@@ -1260,6 +1728,7 @@
           syncComic(index);
           syncStories(index);
           syncModel(index);
+          syncEras(index);
         }
       }
     });
@@ -1267,9 +1736,15 @@
 
   pages.forEach((page) => observer.observe(page));
 
-  // Allow ArrowDown / ArrowUp keys to navigate too
+  // Allow ArrowDown / ArrowUp keys to navigate too. On the eras page, the
+  // Left / Right arrows move between the three horizontal slides instead.
   document.addEventListener('keydown', (e) => {
     const currentIndex = dots.findIndex((d) => d.classList.contains('active'));
+    if (currentIndex === erasPageIndex && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+      e.preventDefault();
+      goEra(eraIndex + (e.key === 'ArrowRight' ? 1 : -1));
+      return;
+    }
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       scrollToPage(Math.min(currentIndex + 1, pages.length - 1));
