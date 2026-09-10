@@ -129,13 +129,208 @@
     background: rgba(0, 0, 0, 0.16);
   }
 
+  /* ── Disruptive question: a blank near-black stage, one line of text ── */
+  #page-6.page-question {
+    background: #050507;
+    color: #f5f5f7;
+    justify-content: center;
+    padding: clamp(1.5rem, 6vw, 5rem);
+  }
+  .page-question .disruptive-question {
+    position: relative;
+    z-index: 2;
+    max-width: 18ch;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    margin: 0;
+  }
+  /* Soft oval glow sitting just below the question text. */
+  .page-question::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    width: min(70vw, 720px);
+    height: min(26vh, 240px);
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center,
+      rgba(150, 210, 255, 0.55) 0%,
+      rgba(100, 180, 255, 0.30) 38%,
+      rgba(70, 150, 255, 0.12) 62%,
+      transparent 78%);
+    filter: blur(48px);
+    pointer-events: none;
+    animation: question-glow-pulse 4.5s ease-in-out infinite alternate;
+  }
+  @keyframes question-glow-pulse {
+    from { opacity: 0.7;  transform: translateX(-50%) scale(0.97); }
+    to   { opacity: 1;    transform: translateX(-50%) scale(1.04); }
+  }
+
+  /* ── The answer: what is left for us — a purple neon scene ── */
+  #page-future.page-answer {
+    background-image:
+      linear-gradient(rgba(6, 2, 12, 0.55), rgba(6, 2, 12, 0.55)),
+      url("jarvision-assets/Purple background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #08040f;
+    color: #f6ecff;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 5rem);
+    overflow: hidden;
+  }
+
+  /* Drifting glow particles across the whole stage. */
+  .page-answer .answer-particles {
+    position: absolute;
+    inset: -10% -5%;
+    z-index: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-image:
+      radial-gradient(2.6px 2.6px at 10% 22%, #f5b8ff, transparent 60%),
+      radial-gradient(2px 2px at 22% 68%, rgba(216, 180, 254, 0.9), transparent 60%),
+      radial-gradient(3px 3px at 34% 40%, #e879f9, transparent 60%),
+      radial-gradient(1.8px 1.8px at 46% 82%, rgba(196, 181, 253, 0.9), transparent 60%),
+      radial-gradient(2.4px 2.4px at 62% 18%, #c084fc, transparent 60%),
+      radial-gradient(2px 2px at 74% 60%, rgba(240, 171, 252, 0.9), transparent 60%),
+      radial-gradient(3px 3px at 86% 34%, #a855f7, transparent 60%),
+      radial-gradient(2.2px 2.2px at 92% 78%, #d946ef, transparent 60%),
+      radial-gradient(1.8px 1.8px at 16% 90%, rgba(233, 213, 255, 0.85), transparent 60%),
+      radial-gradient(2.4px 2.4px at 54% 55%, #e879f9, transparent 60%);
+    filter:
+      drop-shadow(0 0 4px rgba(232, 121, 249, 0.9))
+      drop-shadow(0 0 12px rgba(168, 85, 247, 0.75));
+    animation: answer-drift 14s ease-in-out infinite alternate;
+  }
+
+  .page-answer .answer-wrap {
+    position: relative;
+    z-index: 2;
+    width: min(94vw, 1040px);
+    text-align: center;
+  }
+  .page-answer .answer-eyebrow {
+    display: block;
+    font-size: clamp(0.8rem, 1.6vw, 1.05rem);
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #e9a8ff;
+    text-shadow: 0 0 18px rgba(217, 70, 239, 0.7);
+    margin-bottom: clamp(1.8rem, 5vh, 3.2rem);
+  }
+  .page-answer .answer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(1.4rem, 4vw, 3rem);
+  }
+  .page-answer .answer-card {
+    flex: 1 1 180px;
+    max-width: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    opacity: 0;
+    animation:
+      answer-rise 0.7s ease forwards,
+      answer-float 5s ease-in-out infinite;
+    animation-delay:
+      calc(var(--i) * 0.16s + 0.1s),
+      calc(var(--i) * 0.4s + 0.8s);
+  }
+  /* Glowing neon ring holding each icon. */
+  .page-answer .ac-ring {
+    position: relative;
+    width: clamp(76px, 11vw, 108px);
+    height: clamp(76px, 11vw, 108px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #f4c6ff;
+    border: 1.5px solid rgba(232, 121, 249, 0.75);
+    background: radial-gradient(circle at 50% 50%,
+      rgba(168, 85, 247, 0.28) 0%,
+      rgba(88, 28, 135, 0.18) 55%,
+      transparent 80%);
+    box-shadow:
+      0 0 22px rgba(217, 70, 239, 0.55),
+      0 0 44px rgba(168, 85, 247, 0.4),
+      inset 0 0 20px rgba(232, 121, 249, 0.35);
+    animation: ring-pulse 3.6s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * 0.3s);
+  }
+  .page-answer .ac-ring svg {
+    width: 46%;
+    height: 46%;
+    filter: drop-shadow(0 0 6px rgba(240, 171, 252, 0.9));
+  }
+  .page-answer .ac-key {
+    font-weight: 700;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    font-size: clamp(0.95rem, 1.9vw, 1.25rem);
+    color: #f0abfc;
+    text-shadow: 0 0 16px rgba(217, 70, 239, 0.6);
+  }
+  .page-answer .ac-desc {
+    font-weight: 500;
+    line-height: 1.3;
+    font-size: clamp(0.9rem, 1.7vw, 1.05rem);
+    color: rgba(246, 236, 255, 0.82);
+    max-width: 22ch;
+  }
+  @keyframes answer-rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes answer-float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-14px); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes ring-pulse {
+    from {
+      box-shadow:
+        0 0 16px rgba(217, 70, 239, 0.45),
+        0 0 32px rgba(168, 85, 247, 0.30),
+        inset 0 0 14px rgba(232, 121, 249, 0.28);
+    }
+    to {
+      box-shadow:
+        0 0 30px rgba(217, 70, 239, 0.75),
+        0 0 60px rgba(168, 85, 247, 0.55),
+        inset 0 0 26px rgba(232, 121, 249, 0.5);
+    }
+  }
+  @keyframes answer-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); opacity: 0.7; }
+    to   { transform: translate3d(-24px, -30px, 0) scale(1.06); opacity: 1; }
+  }
+
   /* ── Our Prototype: the dashboard inside a laptop, on a blank stage ── */
   .page-proto {
     padding: 4.5rem 1.5rem;
     justify-content: center;
     gap: clamp(1.2rem, 3vh, 2rem);
-    background: #0a0a0c;
     color: #f5f5f7;
+  }
+  /* ID selector so this always beats the generic .page:nth-child(n)
+     background rules further down. Near-black stage with a faint blue
+     core so the laptop's glow reads as futuristic. */
+  #page-5.page-proto {
+    background:
+      radial-gradient(1100px 760px at 50% 48%, rgba(30, 95, 175, 0.20) 0%, transparent 60%),
+      radial-gradient(900px 620px at 50% 118%, rgba(20, 70, 140, 0.16) 0%, transparent 55%),
+      #04060b;
   }
 
   .page-proto .prototype-heading {
@@ -151,45 +346,57 @@
   .page-proto .scroll-arrow,
   .page-proto .scroll-arrow-up { z-index: 20; }
 
-  /* Subtle glowing starfield behind the laptop. Two layers: faint white
-     specks, plus a few larger colored stars that gently twinkle. */
-  .page-proto::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-      radial-gradient(1.4px 1.4px at 12% 18%, #fff, transparent),
-      radial-gradient(1.5px 1.5px at 24% 62%, rgba(255,255,255,0.85), transparent),
-      radial-gradient(1.2px 1.2px at 38% 30%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1.7px 1.7px at 48% 80%, #fff, transparent),
-      radial-gradient(1.2px 1.2px at 61% 20%, rgba(255,255,255,0.75), transparent),
-      radial-gradient(1.5px 1.5px at 73% 58%, rgba(255,255,255,0.8), transparent),
-      radial-gradient(1.3px 1.3px at 85% 34%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1.6px 1.6px at 90% 74%, #fff, transparent),
-      radial-gradient(1.1px 1.1px at 16% 86%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1.2px 1.2px at 33% 92%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1.3px 1.3px at 79% 90%, rgba(255,255,255,0.65), transparent),
-      radial-gradient(1.1px 1.1px at 6% 48%, rgba(255,255,255,0.55), transparent);
-    animation: proto-twinkle 6s ease-in-out infinite alternate;
-  }
+  /* Floating glowy blue stars down the left and right sides of the stage.
+     The center is kept clear so the laptop + its blue glow stay the focus. */
+  .page-proto::before,
   .page-proto::after {
     content: "";
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    width: 30%;
     z-index: 0;
     pointer-events: none;
-    background-image:
-      radial-gradient(2.4px 2.4px at 28% 42%, rgba(150,200,255,0.95), transparent 60%),
-      radial-gradient(2.4px 2.4px at 68% 66%, rgba(184,150,255,0.9), transparent 60%),
-      radial-gradient(2px 2px at 83% 22%, rgba(120,230,220,0.9), transparent 60%);
-    filter: drop-shadow(0 0 4px rgba(150,200,255,0.55));
-    animation: proto-twinkle 5s ease-in-out infinite alternate-reverse;
+    filter:
+      drop-shadow(0 0 4px rgba(190, 225, 255, 0.95))
+      drop-shadow(0 0 10px rgba(120, 190, 255, 0.9))
+      drop-shadow(0 0 22px rgba(90, 170, 255, 0.7));
   }
-  @keyframes proto-twinkle {
-    from { opacity: 0.55; }
-    to   { opacity: 1; }
+  /* Left column of stars. */
+  .page-proto::before {
+    left: 0;
+    background-repeat: no-repeat;
+    background-image:
+      radial-gradient(2.2px 2.2px at 22% 14%, #dbeeff, transparent 60%),
+      radial-gradient(1.6px 1.6px at 62% 26%, rgba(150, 200, 255, 0.9), transparent 60%),
+      radial-gradient(2.6px 2.6px at 34% 42%, rgba(120, 190, 255, 0.95), transparent 60%),
+      radial-gradient(1.4px 1.4px at 74% 54%, rgba(200, 225, 255, 0.85), transparent 60%),
+      radial-gradient(2px 2px at 18% 68%, #cfe6ff, transparent 60%),
+      radial-gradient(1.5px 1.5px at 52% 82%, rgba(140, 195, 255, 0.9), transparent 60%),
+      radial-gradient(2.4px 2.4px at 30% 92%, rgba(120, 190, 255, 0.95), transparent 60%);
+    animation: proto-float-a 7s ease-in-out infinite alternate;
+  }
+  /* Right column of stars, drifting in the opposite direction. */
+  .page-proto::after {
+    right: 0;
+    background-repeat: no-repeat;
+    background-image:
+      radial-gradient(2.4px 2.4px at 78% 12%, #dbeeff, transparent 60%),
+      radial-gradient(1.6px 1.6px at 40% 28%, rgba(150, 200, 255, 0.9), transparent 60%),
+      radial-gradient(2.2px 2.2px at 66% 44%, rgba(120, 190, 255, 0.95), transparent 60%),
+      radial-gradient(1.4px 1.4px at 26% 56%, rgba(200, 225, 255, 0.85), transparent 60%),
+      radial-gradient(2px 2px at 82% 70%, #cfe6ff, transparent 60%),
+      radial-gradient(1.5px 1.5px at 48% 84%, rgba(140, 195, 255, 0.9), transparent 60%),
+      radial-gradient(2.4px 2.4px at 70% 94%, rgba(120, 190, 255, 0.95), transparent 60%);
+    animation: proto-float-b 8.5s ease-in-out infinite alternate;
+  }
+  @keyframes proto-float-a {
+    from { transform: translateY(-14px); opacity: 0.55; }
+    to   { transform: translateY(14px);  opacity: 1; }
+  }
+  @keyframes proto-float-b {
+    from { transform: translateY(12px);  opacity: 0.7; }
+    to   { transform: translateY(-16px); opacity: 1; }
   }
 
   /* Laptop mockup */
@@ -203,20 +410,45 @@
     flex: 0 1 auto;
     min-height: 0;
   }
-  /* Soft white glow behind the laptop to lift it off the starfield. */
+  /* Bright, shiny light-blue glow behind the laptop. A tight, near-white
+     hot core fades out into a wide blue halo, and the whole thing gently
+     pulses so it reads as alive and futuristic. */
   .laptop::before {
     content: "";
     position: absolute;
     z-index: -1;
     top: 50%; left: 50%;
-    width: 108%; height: 118%;
+    width: 130%; height: 150%;
     transform: translate(-50%, -50%);
     background: radial-gradient(ellipse at center,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.07) 38%,
-      transparent 70%);
-    filter: blur(28px);
+      rgba(225, 245, 255, 0.85) 0%,
+      rgba(150, 210, 255, 0.70) 18%,
+      rgba(100, 180, 255, 0.45) 40%,
+      rgba(70, 150, 255, 0.22) 60%,
+      transparent 76%);
+    filter: blur(42px);
     pointer-events: none;
+    animation: laptop-glow-pulse 4.5s ease-in-out infinite alternate;
+  }
+  /* Second, wider soft halo layer for extra shine bleeding into the stage. */
+  .laptop::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    top: 50%; left: 50%;
+    width: 165%; height: 185%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center,
+      rgba(120, 195, 255, 0.35) 0%,
+      rgba(80, 160, 255, 0.16) 45%,
+      transparent 70%);
+    filter: blur(70px);
+    pointer-events: none;
+    animation: laptop-glow-pulse 4.5s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes laptop-glow-pulse {
+    from { opacity: 0.75; transform: translate(-50%, -50%) scale(0.97); }
+    to   { opacity: 1;    transform: translate(-50%, -50%) scale(1.05); }
   }
   .laptop-lid {
     position: relative;
@@ -807,12 +1039,48 @@
   }
   .page-model.model-active .role-card { transition-delay: calc(0.22s + var(--i, 0) * 0.12s); }
 
-  /* Closing statement page. */
-  .page-close h1 {
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    font-size: clamp(2.2rem, 6vw, 4.2rem);
+  /* Closing statement page: fullscreen mountain image with the title
+     dramatically placed above the peak, near the top of the frame. */
+  #page-7.page-close {
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.6)),
+      url("jarvision-assets/See you at the top.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #05060a;
+    justify-content: flex-start;
+    padding-top: clamp(3.5rem, 13vh, 9rem);
+  }
+  .page-close .close-eyebrow {
+    position: relative;
+    z-index: 2;
+    margin: 0 0 0.6rem;
+    font-weight: 500;
+    font-size: clamp(0.85rem, 1.9vw, 1.15rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(150, 180, 225, 0.62);
+    mix-blend-mode: screen;
+    text-shadow: 0 0 14px rgba(70, 120, 200, 0.18);
+    animation: close-title-in 1.4s ease both;
+  }
+  .page-close .close-title {
+    position: relative;
+    z-index: 2;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    font-size: clamp(2.2rem, 6.5vw, 5rem);
+    line-height: 1.05;
     margin: 0;
+    color: rgba(120, 155, 205, 0.7);
+    mix-blend-mode: screen;
+    text-shadow: 0 0 16px rgba(70, 120, 200, 0.2);
+    animation: close-title-in 1.4s ease both;
+  }
+  @keyframes close-title-in {
+    from { opacity: 0; transform: translateY(-24px); letter-spacing: 0.16em; }
+    to   { opacity: 1; transform: translateY(0);      letter-spacing: 0.02em; }
   }
 
   @media (max-width: 760px) {
@@ -1692,6 +1960,23 @@
     </button>
   </section>
 
+  <section class="page page-model" id="page-model">
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="jarvision-assets/Ball Dropping.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+    <button class="video-toggle" aria-label="Play or pause video">
+      <svg class="ic-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      <svg class="ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button class="scroll-arrow-up" aria-label="Go to previous page">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <button class="scroll-arrow" aria-label="Go to next page">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </section>
+
   <section class="page page-proto" id="page-5">
     <button class="scroll-arrow-up" aria-label="Go to previous page">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
@@ -1714,62 +1999,83 @@
     </button>
   </section>
 
-  <section class="page page-model" id="page-model">
+  <section class="page page-question" id="page-6">
     <button class="scroll-arrow-up" aria-label="Go to previous page">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </button>
+    <h1 class="disruptive-question">If JARVISION is here, what is left for us?</h1>
+    <button class="scroll-arrow" aria-label="Go to next page">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </section>
 
-    <div class="model-wrap">
-      <header class="model-header">
-        <span class="model-eyebrow">Staying Relevant</span>
-        <h2>Agents do the work. We hold the agency.</h2>
-        <p class="model-sub">As Jarvis takes on the execution, our value moves up the stack, from doing the tasks to <b>directing them</b>.</p>
-      </header>
+  <section class="page page-answer" id="page-future">
+    <div class="answer-particles" aria-hidden="true"></div>
+    <button class="scroll-arrow-up" aria-label="Go to previous page">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="answer-wrap">
+      <div class="answer-grid">
 
-      <div class="roles">
-        <div class="role-card" style="--i: 0;">
-          <div class="r-ic">&#129517;</div>
-          <div class="r-t">Direction</div>
-          <div class="r-d">We choose what matters and set the priorities.</div>
+        <div class="answer-card" style="--i: 0;">
+          <span class="ac-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </span>
+          <div class="ac-key">Choose</div>
+          <div class="ac-desc">We choose the variables the machine can&rsquo;t</div>
         </div>
-        <div class="role-card" style="--i: 1;">
-          <div class="r-ic">&#9878;</div>
-          <div class="r-t">Judgement</div>
-          <div class="r-d">We make the calls that carry real weight.</div>
+
+        <div class="answer-card" style="--i: 1;">
+          <span class="ac-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18"/>
+              <path d="M3 7h4c2 0 4-1 5-2 1 1 3 2 5 2h4"/>
+              <path d="m6 7-3 7a3 3 0 0 0 6 0z"/>
+              <path d="m18 7 3 7a3 3 0 0 1-6 0z"/>
+              <path d="M8 21h8"/>
+            </svg>
+          </span>
+          <div class="ac-key">Judge</div>
+          <div class="ac-desc">We judge between good strategies</div>
         </div>
-        <div class="role-card" style="--i: 2;">
-          <div class="r-ic">&#127919;</div>
-          <div class="r-t">Accountability</div>
-          <div class="r-d">We own the outcome, from first call to last.</div>
+
+        <div class="answer-card" style="--i: 2;">
+          <span class="ac-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+          </span>
+          <div class="ac-key">Challenge</div>
+          <div class="ac-desc">We challenge the machine</div>
         </div>
+
+        <div class="answer-card" style="--i: 3;">
+          <span class="ac-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </span>
+          <div class="ac-key">Carry</div>
+          <div class="ac-desc">We carry the people</div>
+        </div>
+
       </div>
     </div>
-
     <button class="scroll-arrow" aria-label="Go to next page">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </button>
   </section>
 
-  <section class="page page-6" id="page-6">
+  <section class="page page-vision-video" id="page-vision-video">
     <video class="bg-video" autoplay muted loop playsinline>
-      <source src="Reorganization.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
-    <button class="video-toggle" aria-label="Play or pause video">
-      <svg class="ic-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-      <svg class="ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <button class="scroll-arrow-up" aria-label="Go to previous page">
-      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-    <button class="scroll-arrow" aria-label="Go to next page">
-      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-  </section>
-
-  <section class="page page-future" id="page-future">
-    <video class="bg-video" autoplay muted loop playsinline>
-      <source src="agentverse emas final.mp4" type="video/mp4">
+      <source src="jarvision-assets/pmi so far ahead in the future.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
     <button class="video-toggle" aria-label="Play or pause video">
@@ -1895,7 +2201,8 @@
     <button class="scroll-arrow-up" aria-label="Go to previous page">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </button>
-    <h1>Stay relevant with Jarvis.</h1>
+    <p class="close-eyebrow">Stay relevant with JARVISION</p>
+    <h1 class="close-title">SEE YOU ON TOP</h1>
   </section>
 
 </div>
