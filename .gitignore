@@ -6,3 +6,10 @@
 # OS / editor cruft
 Thumbs.db
 .DS_Store
+.vscode/
+
+# Cloned source project used only to build the dashboard (has node_modules + own git repo)
+/jarVision-source/
+
+# Local backup of the previous dashboard build
+/jarvis-dashboard/index.html.bak
