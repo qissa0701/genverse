@@ -823,27 +823,29 @@
   /* ═══ Section: Agentverse Eras — three horizontal slides ══════════ */
   .page-eras {
     padding: 0;
-    color: #0f2438;
+    color: #eef2f7;
+    /* Split stage: soft red glow on the left (the "before"), soft light-blue
+       on the right (the "after"), meeting at a near-black seam in the middle. */
     background:
-      radial-gradient(900px 520px at 50% -10%, rgba(120,180,255,0.35), transparent 60%),
-      radial-gradient(700px 480px at 100% 120%, rgba(150,200,255,0.30), transparent 60%),
-      linear-gradient(160deg, #eaf3ff 0%, #d6e8ff 55%, #cfe2fb 100%);
+      radial-gradient(72% 108% at 0% 50%, rgba(226, 96, 118, 0.30), transparent 62%),
+      radial-gradient(72% 108% at 100% 50%, rgba(120, 180, 255, 0.32), transparent 62%),
+      linear-gradient(90deg, #260f14 0%, #150a0f 30%, #0a0b10 50%, #0a1120 70%, #102138 100%);
   }
-  /* Nav arrows adopt a dark theme so they read on the light-blue stage. */
+  /* Nav arrows adopt a light theme so they read on the dark stage. */
   .page-eras .scroll-arrow,
   .page-eras .scroll-arrow-up {
     z-index: 30;
-    background: rgba(15, 40, 70, 0.10);
-    color: #0f2438;
+    background: rgba(255, 255, 255, 0.12);
+    color: #eef2f7;
   }
   .page-eras .scroll-arrow:hover,
-  .page-eras .scroll-arrow-up:hover { background: rgba(15, 40, 70, 0.20); }
+  .page-eras .scroll-arrow-up:hover { background: rgba(255, 255, 255, 0.24); }
 
   /* Horizontal track that holds the three era slides side by side. */
-  /* Track sits below the year strip. */
+  /* Track fills the page; each slide pads its own content clear of the header. */
   .eras-track {
     position: absolute;
-    inset: clamp(9rem, 20vh, 12rem) 0 0;
+    inset: 0;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
@@ -853,72 +855,119 @@
   }
   .eras-track::-webkit-scrollbar { display: none; }
 
-  /* ── Year strip / indicator above the carousel ── */
+  /* ── Standing statement + tagline tabs above the carousel ── */
   .eras-header {
     position: absolute;
-    top: clamp(2.6rem, 5vh, 3.6rem);
+    top: clamp(1.8rem, 4.5vh, 3.2rem);
     left: 0; right: 0;
     z-index: 26;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 0 clamp(2rem, 6vw, 5rem);
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.85rem;
+    padding: 0 clamp(1.5rem, 6vw, 5rem);
     pointer-events: none;
   }
-  .era-tab {
-    pointer-events: auto;
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-family: inherit;
-    color: #0f2438;
-    transition: opacity 0.35s ease;
-  }
-  .era-tab .et-eyebrow {
+  .eras-eyebrow {
+    margin: 0;
     font-size: 0.66rem;
     font-weight: 700;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.34em;
     text-transform: uppercase;
-    color: #2f6fb0;
-    opacity: 0;
-    transition: opacity 0.35s ease;
+    color: rgba(233, 238, 245, 0.55);
   }
-  .era-tab .et-year {
-    font-size: clamp(2.4rem, 6vw, 4.4rem);
+  .eras-statement {
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;              /* keep the whole line on one row */
+    font-size: clamp(1.05rem, 2.3vw, 1.7rem);
     font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: rgba(15, 40, 70, 0.24);
-    transition: color 0.35s ease, transform 0.35s ease;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: #f4f7fb;
   }
-  .era-tab .et-tag {
-    font-size: clamp(0.85rem, 1.5vw, 1.05rem);
-    font-weight: 600;
-    font-style: italic;
-    color: #1c4b7a;
-    margin-top: 0.35rem;
-    max-width: 22ch;
-    opacity: 0;
-    transform: translateY(-4px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+  .eras-statement em { font-style: normal; color: #8fb9ff; }
+  @media (max-width: 600px) {
+    /* Let it wrap again on very narrow screens rather than overflow. */
+    .eras-statement { white-space: normal; max-width: 24ch; }
   }
-  /* Center / right tabs keep their tagline aligned under the year. */
-  .era-tab[data-i="1"] .et-tag { align-self: center; text-align: center; }
-  .era-tab[data-i="2"] .et-tag { align-self: flex-end; text-align: right; }
 
-  .era-tab.is-active .et-eyebrow { opacity: 1; }
-  .era-tab.is-active .et-year { color: #0f2438; }
-  .era-tab.is-active .et-tag { opacity: 1; transform: translateY(0); }
-  .era-tab:not(.is-active):hover .et-year { color: rgba(15, 40, 70, 0.45); }
+  /* Tagline tabs double as the slide indicator + direct navigation. */
+  .eras-tabs {
+    pointer-events: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem 0.55rem;
+    margin-top: 0.15rem;
+    max-width: 100%;
+  }
+  /* Numbered stepper: inactive = a circle with its number; active = the
+     circle expands into a pill that reveals the tagline. */
+  .era-tab {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: inherit;
+    color: rgba(233, 238, 245, 0.75);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 0.28rem;
+    overflow: hidden;
+    transition: color 0.3s ease, background 0.35s ease, border-color 0.3s ease,
+                box-shadow 0.35s ease;
+  }
+  .era-tab .et-num {
+    flex: 0 0 auto;
+    width: 1.85rem; height: 1.85rem;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.10);
+    color: #eef2f7;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .era-tab .et-label {
+    max-width: 0;
+    min-width: 0;
+    opacity: 0;
+    padding: 0;
+    white-space: nowrap;
+    font-size: clamp(0.74rem, 1.2vw, 0.9rem);
+    font-weight: 600;
+    transition: max-width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease, padding 0.4s ease;
+  }
+  .era-tab:hover { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+  .era-tab:hover .et-num { background: rgba(255, 255, 255, 0.2); }
+  .era-tab.is-active {
+    color: #10151f;
+    background: #eef2f7;
+    border-color: #eef2f7;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
+  .era-tab.is-active .et-num { background: #2f6fb0; color: #fff; }
+  .era-tab.is-active .et-label {
+    max-width: 24ch;
+    opacity: 1;
+    padding: 0 0.7rem 0 0.55rem;
+  }
 
   @media (max-width: 720px) {
-    .era-tab .et-tag { display: none; }
-    .eras-header { top: 3.4rem; }
+    /* Keep the tabs on a single, swipeable row so the header stays short. */
+    .eras-tabs {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .eras-tabs::-webkit-scrollbar { display: none; }
+    .era-tab { white-space: nowrap; }
   }
 
   .era-slide {
@@ -929,134 +978,144 @@
     scroll-snap-align: start;
     scroll-snap-stop: always;
     display: flex;
-    align-items: center;
+    /* "safe center" keeps content from being clipped at the top when a short
+       viewport can't fit the big polaroids — it falls back to start + scroll. */
+    align-items: safe center;
     justify-content: center;
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    padding: clamp(3.5rem, 7vh, 5rem) clamp(3rem, 8vw, 7rem);
+    gap: clamp(1.5rem, 4.5vw, 5rem);
+    /* Top pad clears the absolute header (now a single line, so shorter);
+       bottom pad clears the nav arrows. */
+    padding: clamp(8.5rem, 20vh, 11.5rem) clamp(3.5rem, 7vw, 7rem) clamp(3rem, 6vh, 4.5rem);
+    overflow-y: auto;
+    scrollbar-width: none;
   }
-  @media (max-width: 900px) {
+  .era-slide::-webkit-scrollbar { display: none; }
+
+  /* ── Each side: a rotated label rail beside its big polaroid ── */
+  .era-side {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(0.3rem, 0.9vw, 0.8rem);
+  }
+  .era-side.is-after { flex-direction: row-reverse; }
+
+  /* Vertical rail: the label is rotated so it reads bottom-to-top. */
+  .era-axis {
+    position: relative;
+    align-self: stretch;
+    width: 1.7rem;
+    flex: 0 0 auto;
+  }
+  .era-axis span {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    white-space: nowrap;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+  .era-side.is-before .era-axis span { color: #f0a6b0; }
+  .era-side.is-after  .era-axis span { color: #a9ccff; }
+
+  /* ── The polaroids: the highlight of the section, one big frame per side ── */
+  .era-pola {
+    position: relative;
+    margin: 0;
+    background: #fdfdfb;
+    border-radius: 4px;
+    padding: 13px 13px 48px;
+    transition: transform 0.5s cubic-bezier(0.2, 1.2, 0.4, 1), box-shadow 0.5s ease;
+  }
+  /* Soft coloured drop glows: warm red on the left, shiny blue on the right. */
+  .era-side.is-before .era-pola {
+    transform: rotate(-2.5deg);
+    box-shadow:
+      0 14px 40px rgba(228, 74, 100, 0.40),
+      0 34px 90px rgba(228, 74, 100, 0.30);
+  }
+  .era-side.is-after .era-pola {
+    transform: rotate(2.5deg);
+    box-shadow:
+      0 0 28px rgba(150, 200, 255, 0.32),
+      0 14px 40px rgba(96, 160, 255, 0.46),
+      0 36px 96px rgba(96, 160, 255, 0.34);
+  }
+  .era-side.is-before .era-pola:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.03);
+    box-shadow:
+      0 18px 48px rgba(228, 74, 100, 0.52),
+      0 42px 110px rgba(228, 74, 100, 0.40);
+  }
+  .era-side.is-after .era-pola:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.03);
+    box-shadow:
+      0 0 36px rgba(160, 205, 255, 0.48),
+      0 18px 48px rgba(96, 160, 255, 0.58),
+      0 42px 110px rgba(96, 160, 255, 0.42);
+  }
+  .era-pola-photo {
+    width: min(31vw, 46vh);
+    aspect-ratio: 3 / 4;
+    border-radius: 2px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a2233 0%, #0f1523 100%);
+  }
+  .era-pola-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .era-pola-cap {
+    position: absolute;
+    left: 0; right: 0; bottom: 16px;
+    padding: 0 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    color: #2a2a2e;
+  }
+
+  /* ── Centre column: the tagline + trimmed core point, sitting in the middle ── */
+  .era-center {
+    flex: 1 1 0;
+    min-width: 13rem;
+    max-width: 40ch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.1rem, 2.6vh, 1.8rem);
+    text-align: center;
+  }
+  .era-headline {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.9vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #f4f7fb;
+  }
+  .era-text { margin: 0; }
+  .era-text p {
+    margin: 0 0 0.85rem;
+    font-size: clamp(1rem, 1.35vw, 1.16rem);
+    line-height: 1.65;
+    color: rgba(233, 238, 245, 0.82);
+  }
+  .era-text p:last-child { margin-bottom: 0; }
+  .era-text b { color: #fff; font-weight: 700; }
+
+  @media (max-width: 860px) {
+    /* Stack the two big polaroids with the text between them (before on top). */
     .era-slide {
       flex-direction: column;
-      gap: 1.1rem;
-      padding: 4.5rem 1.4rem 5.5rem;
-      overflow-y: auto;
       justify-content: flex-start;
+      gap: clamp(1.3rem, 3.2vh, 2.2rem);
+      padding: clamp(9rem, 22vh, 11rem) 1.4rem 3.5rem;
     }
-  }
-
-  /* ── Left: framed placeholder image (polaroid / comic-panel look) ── */
-  .era-figure {
-    flex: 0 0 auto;
-    width: min(46%, 500px);
-    margin: 0;
-  }
-  @media (max-width: 900px) { .era-figure { width: min(82%, 380px); } }
-
-  .era-frame {
-    position: relative;
-    background: #fff;
-    border: 6px solid #0f2438;
-    border-radius: 5px;
-    padding: 10px 10px 46px;
-    box-shadow: 12px 12px 0 rgba(15, 40, 70, 0.28);
-    transform: rotate(-3deg);
-    transition: transform 0.4s cubic-bezier(0.2, 1.3, 0.4, 1), box-shadow 0.4s ease;
-  }
-  .era-slide:nth-child(even) .era-frame { transform: rotate(3deg); }
-  .era-frame:hover {
-    transform: rotate(0deg) translateY(-6px) scale(1.02);
-    box-shadow: 18px 22px 34px rgba(15, 40, 70, 0.35);
-  }
-
-  .era-ph {
-    aspect-ratio: 4 / 5;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #6a86a6;
-    background: linear-gradient(135deg, #eef5ff 0%, #dbe9fb 100%);
-    border: 1.5px dashed rgba(15, 40, 70, 0.28);
-    overflow: hidden;
-  }
-  .era-ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .era-ph span {
-    font-size: 0.78rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-  .era-cap {
-    position: absolute;
-    left: 0; right: 0; bottom: 12px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.9rem;
-    letter-spacing: 0.03em;
-    color: #0f2438;
-  }
-
-  /* ── Right: the era's story, features and metrics ── */
-  .era-content {
-    flex: 1 1 auto;
-    max-width: 620px;
-    max-height: 100%;
-  }
-  .era-intro {
-    font-size: 1.02rem;
-    line-height: 1.55;
-    color: #274b68;
-    margin-bottom: 1.6rem;
-    max-width: 520px;
-  }
-
-  /* Clean, borderless feature list — no bullet markers, generous spacing. */
-  .era-features {
-    list-style: none;
-    display: grid;
-    gap: 0.9rem;
-    margin: 0 0 1.8rem;
-  }
-  .era-features li {
-    font-size: 0.98rem;
-    line-height: 1.45;
-    color: #22496a;
-  }
-  .era-features li b { color: #0f2438; font-weight: 600; }
-
-  /* Metrics as a light, understated row — no heavy box. */
-  .era-metrics {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.9rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid rgba(15, 40, 70, 0.15);
-  }
-  .era-metrics .m-h {
-    font-size: 0.64rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #2f6fb0;
-    font-weight: 700;
-  }
-  .era-metrics ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem 1.4rem; }
-  .era-metrics li {
-    position: relative;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #17364f;
-  }
-  .era-metrics li + li::before {
-    content: "";
-    position: absolute;
-    left: -0.85rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: rgba(15, 40, 70, 0.35);
+    .era-center { order: 0; max-width: 42ch; }
+    .era-pola-photo { width: min(62vw, 32vh); }
+    .era-pola { padding: 10px 10px 38px; }
+    .era-pola-cap { font-size: 0.85rem; bottom: 12px; }
   }
 
   /* Horizontal navigation arrows (left / right). */
@@ -1067,13 +1126,13 @@
     z-index: 25;
     width: 3rem; height: 3rem;
     border: none; border-radius: 50%;
-    background: rgba(15, 40, 70, 0.12);
-    color: #0f2438;
+    background: rgba(255, 255, 255, 0.12);
+    color: #eef2f7;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s ease, transform 0.2s ease;
   }
-  .era-nav:hover { background: rgba(15, 40, 70, 0.24); }
+  .era-nav:hover { background: rgba(255, 255, 255, 0.24); }
   .era-nav:active { transform: translateY(-50%) scale(0.92); }
   .era-nav svg {
     width: 1.4rem; height: 1.4rem;
@@ -1086,27 +1145,24 @@
   .era-next svg { transform: rotate(-90deg); }
   .era-nav[disabled] { opacity: 0.3; cursor: default; }
 
-  /* Entrance: the current slide's figure + content stagger in. */
-  .era-figure,
-  .era-content > * {
+  /* Entrance: the two sides glide in from the edges, the centre lifts up. */
+  .era-side,
+  .era-center {
     opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.18, 1.1, 0.35, 1);
+    transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.18, 1.1, 0.35, 1);
   }
-  .era-figure { transform: translateY(0) scale(0.9); }
-  .era-slide.is-current .era-figure { opacity: 1; transform: translateY(0) scale(1); }
-  .era-slide.is-current .era-content > * { opacity: 1; transform: translateY(0); }
-  .era-slide.is-current .era-content > *:nth-child(1) { transition-delay: 0.05s; }
-  .era-slide.is-current .era-content > *:nth-child(2) { transition-delay: 0.12s; }
-  .era-slide.is-current .era-content > *:nth-child(3) { transition-delay: 0.19s; }
-  .era-slide.is-current .era-content > *:nth-child(4) { transition-delay: 0.26s; }
-  .era-slide.is-current .era-content > *:nth-child(5) { transition-delay: 0.33s; }
-  .era-slide.is-current .era-content > *:nth-child(6) { transition-delay: 0.40s; }
-  .era-slide.is-current .era-content > *:nth-child(7) { transition-delay: 0.47s; }
+  .era-side.is-before { transform: translateX(-32px) rotate(-1deg); }
+  .era-side.is-after  { transform: translateX(32px) rotate(1deg); }
+  .era-center { transform: translateY(22px); }
+  .era-slide.is-current .era-side,
+  .era-slide.is-current .era-center {
+    opacity: 1;
+    transform: none;
+  }
+  .era-slide.is-current .era-center { transition-delay: 0.14s; }
 
-  @media (max-width: 900px) {
-    .era-figure { transform: translateY(22px) scale(0.94); }
-    .era-metrics ul { gap: 0.4rem; }
+  @media (prefers-reduced-motion: reduce) {
+    .era-side, .era-center { transition-duration: 0.001s; }
   }
 
   /* ═══ Page: The Future of Jarvis ══════════════════════════════════ */
@@ -1733,102 +1789,91 @@
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </button>
 
-    <!-- Year strip: lives above the carousel and doubles as the slide
-         indicator. The active year lights up; only its tagline is shown. -->
+    <!-- Standing statement + tagline tabs. The tabs double as the slide
+         indicator: the active tagline lights up and matches the slide. -->
     <div class="eras-header" id="erasHeader">
-      <button class="era-tab is-active" data-i="0" style="text-align:left;">
-        <span class="et-eyebrow">Agentverse</span>
-        <span class="et-year">2027</span>
-        <span class="et-tag">Jarvis, the executioner</span>
-      </button>
-      <button class="era-tab" data-i="1" style="text-align:center;">
-        <span class="et-eyebrow">Agentverse</span>
-        <span class="et-year">2030</span>
-        <span class="et-tag">Jarvis, the embedded teammate</span>
-      </button>
-      <button class="era-tab" data-i="2" style="text-align:right;">
-        <span class="et-eyebrow">Agentverse</span>
-        <span class="et-year">2033</span>
-        <span class="et-tag">Jarvis, an extension of us</span>
-      </button>
+      <p class="eras-eyebrow">Three years in</p>
+      <h2 class="eras-statement">PMI doesn't chase technology anymore. <em>It rehearses it.</em></h2>
+      <div class="eras-tabs">
+        <button class="era-tab is-active" data-i="0" aria-label="Always ready"><span class="et-num">1</span><span class="et-label">Always ready</span></button>
+        <button class="era-tab" data-i="1" aria-label="An Agile Company"><span class="et-num">2</span><span class="et-label">An Agile Company</span></button>
+        <button class="era-tab" data-i="2" aria-label="Market Leader"><span class="et-num">3</span><span class="et-label">Market Leader</span></button>
+      </div>
     </div>
 
     <div class="eras-track" id="erasTrack">
 
-      <!-- ── Slide 1: 2027 ── -->
+      <!-- ── Slide 1: A technology-forward company ── -->
       <article class="era-slide">
-        <figure class="era-figure">
-          <div class="era-frame">
-            <div class="era-ph"><img src="jarvis 2027 polaroid.png" alt="Jarvis 2027, the executioner"></div>
-            <figcaption class="era-cap">Plan My Day</figcaption>
+        <div class="era-side is-before">
+          <div class="era-axis"><span>Competitors</span></div>
+          <figure class="era-pola">
+            <div class="era-pola-photo"><img src="jarvision-assets/3 years ahead 1 left.png" alt="A team overwhelmed at a boardroom table, arguing amid papers flying everywhere and question marks on the wall" loading="lazy"></div>
+            <figcaption class="era-pola-cap">Still debating whether to start</figcaption>
+          </figure>
+        </div>
+        <div class="era-center">
+          <h3 class="era-headline">A technology-forward company</h3>
+          <div class="era-text">
+            <p>While others are still debating whether to start, we've already <b>simulated it, costed it, and know who's ready</b>.</p>
           </div>
-        </figure>
-        <div class="era-content">
-          <p class="era-intro">"Plan My Day", grown up. It prepares everything before you open your laptop in the morning.</p>
-          <ul class="era-features">
-            <li>Talk to it to <b>reshape your schedule</b></li>
-            <li>Breaks work into <b>actionable steps</b></li>
-            <li>Turns meeting talk into <b>tasks and reminders</b></li>
-            <li><b>Executes</b> those steps, keeping you in the loop</li>
-          </ul>
-          <div class="era-metrics">
-            <span class="m-h">Success</span>
-            <ul>
-              <li>Productivity up</li>
-              <li>Learns how we work</li>
-            </ul>
-          </div>
+        </div>
+        <div class="era-side is-after">
+          <div class="era-axis"><span>PMI with Jarvision</span></div>
+          <figure class="era-pola">
+            <div class="era-pola-photo"><img src="jarvision-assets/3 years ahead 1 right.png" alt="A confident team reading clear dashboards: revenue growth, market share and a connected network" loading="lazy"></div>
+            <figcaption class="era-pola-cap">Simulated, costed, ready</figcaption>
+          </figure>
         </div>
       </article>
 
-      <!-- ── Slide 2: 2030 ── -->
+      <!-- ── Slide 2: An agile company ── -->
       <article class="era-slide">
-        <figure class="era-figure">
-          <div class="era-frame">
-            <div class="era-ph"><img src="jarvis 2030 polaroid.png" alt="Jarvis 2030, the embedded teammate"></div>
-            <figcaption class="era-cap">In the room</figcaption>
+        <div class="era-side is-before">
+          <div class="era-axis"><span>Competitors</span></div>
+          <figure class="era-pola">
+            <div class="era-pola-photo"><img src="jarvision-assets/3 years ahead 2 left.png" alt="Engineers wrestling a tangle of cables and legacy systems flagged incompatible, with timeout and auth errors everywhere" loading="lazy"></div>
+            <figcaption class="era-pola-cap">Every rollout a fight</figcaption>
+          </figure>
+        </div>
+        <div class="era-center">
+          <h3 class="era-headline">An agile company</h3>
+          <div class="era-text">
+            <p>New technology becomes <b>plug and play</b>. Funding follows <b>evidence, not the calendar</b> &mdash; and small teams own outcomes end to end.</p>
           </div>
-        </figure>
-        <div class="era-content">
-          <p class="era-intro">It's in the room with you, joining meetings and taking part like any colleague.</p>
-          <ul class="era-features">
-            <li><b>Answers</b> when the room can't</li>
-            <li>Weighs in with its own <b>opinion</b></li>
-            <li><b>Fact-checks</b> and raises its hand</li>
-            <li>Stands in as anyone's <b>digital twin</b></li>
-          </ul>
-          <div class="era-metrics">
-            <span class="m-h">Success</span>
-            <ul>
-              <li>Knowledge always present</li>
-              <li>No timezone blockers</li>
-            </ul>
-          </div>
+        </div>
+        <div class="era-side is-after">
+          <div class="era-axis"><span>PMI with Jarvision</span></div>
+          <figure class="era-pola">
+            <div class="era-pola-photo"><img src="jarvision-assets/3 years ahead 2 right.png" alt="A calm team snapping a new module into a connected ecosystem of building blocks, all systems green" loading="lazy"></div>
+            <figcaption class="era-pola-cap">Plug and play</figcaption>
+          </figure>
         </div>
       </article>
 
-      <!-- ── Slide 3: 2033 ── -->
+      <!-- ── Slide 3: A company that leads its market ── -->
       <article class="era-slide">
-        <figure class="era-figure">
-          <div class="era-frame">
-            <div class="era-ph"><img src="jarvis 2033 polaroid.png" alt="Jarvis 2033, an extension of us"></div>
-            <figcaption class="era-cap">Simulate outcomes</figcaption>
+        <div class="era-side is-before">
+          <div class="era-axis"><span>Competitors</span></div>
+          <figure class="era-pola">
+            <div class="era-pola-photo"><img src="jarvision-assets/3  years ahead 3 left.png" alt="A stressed chess player, head in hand, buried in strategy books as the clock shows seven seconds left" loading="lazy"></div>
+            <figcaption class="era-pola-cap">Still studying the position</figcaption>
+          </figure>
+        </div>
+        <div class="era-center">
+          <h3 class="era-headline">A company that leads its market</h3>
+          <div class="era-text">
+            <p>Same board, same pieces. We just <b>decide better and faster</b>.</p>
+            <p>We've played it out a thousand times in simulation &mdash; so while others study the position, <b>we've already moved</b>.</p>
+            <p>And everyone's <b>in the game</b>, not watching from the side.</p>
           </div>
-        </figure>
-        <div class="era-content">
-          <p class="era-intro">It grows the top line, not just output &mdash; modelling how we work and the world we work in.</p>
-          <ul class="era-features">
-            <li><b>Simulates</b> big decisions before we make them</li>
-            <li>Surfaces hidden <b>risks and opportunities</b></li>
-            <li>Keeps <b>humans</b> on the calls that matter</li>
-          </ul>
-          <div class="era-metrics">
-            <span class="m-h">Success</span>
-            <ul>
-              <li>Grows the top line</li>
-              <li>De-risked decisions</li>
-            </ul>
-          </div>
+        </div>
+        <div class="era-side is-after">
+          <div class="era-axis"><span>PMI with Jarvision</span></div>
+          <figure class="era-pola">
+            <div class="era-pola-photo"><img src="jarvision-assets/3 years ahead 3 right.png" alt="A calm chess player with a holographic now-to-win simulation, high win probability and plenty of time on the clock, team smiling behind" loading="lazy"></div>
+            <figcaption class="era-pola-cap">Already several moves ahead</figcaption>
+          </figure>
         </div>
       </article>
 
