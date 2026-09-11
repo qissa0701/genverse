@@ -1109,6 +1109,10 @@
   .page-eras .scroll-arrow:hover,
   .page-eras .scroll-arrow-up:hover { background: rgba(255, 255, 255, 0.24); }
 
+  /* The up arrow overlaps the "Three years in" eyebrow text, so hide it here.
+     Scrolling and the other nav arrows still work for navigation. */
+  .page-eras .scroll-arrow-up { display: none; }
+
   /* Horizontal track that holds the three era slides side by side. */
   /* Track fills the page; each slide pads its own content clear of the header. */
   .eras-track {
