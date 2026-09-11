@@ -1985,7 +1985,7 @@
     <button class="scroll-arrow-up" aria-label="Go to previous page">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
     </button>
-    <h1 class="prototype-heading">Experience Jarvis</h1>
+    <h1 class="prototype-heading">Experience Jarvision</h1>
     <div class="laptop">
       <div class="laptop-lid">
         <div class="embed-wrap" id="embedWrap">
@@ -2307,6 +2307,19 @@
   const protoClose = document.getElementById('protoClose');
   const protoModalFrame = document.getElementById('protoModalFrame');
 
+  function onEscClose(e) {
+    if (e.key === 'Escape' && protoModal && !protoModal.hidden) closeProto();
+  }
+  // When focus is inside the expanded prototype's iframe (e.g. after clicking
+  // into JARVISION studio and back), the parent document never sees the
+  // keydown — so also listen inside the iframe document and forward Escape.
+  function attachFrameEsc() {
+    try {
+      const doc = protoModalFrame.contentDocument || protoModalFrame.contentWindow.document;
+      if (doc) doc.addEventListener('keydown', onEscClose);
+    } catch (err) { /* cross-origin frame: nothing we can do here */ }
+  }
+
   function openProto() {
     if (!protoModal || !protoModalFrame || !frameSrc) return;
     protoModalFrame.src = frameSrc;
@@ -2319,9 +2332,8 @@
   }
   if (expandBtn) expandBtn.addEventListener('click', openProto);
   if (protoClose) protoClose.addEventListener('click', closeProto);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && protoModal && !protoModal.hidden) closeProto();
-  });
+  if (protoModalFrame) protoModalFrame.addEventListener('load', attachFrameEsc);
+  document.addEventListener('keydown', onEscClose);
 
   // Browsers only allow audio after the user interacts with the page. Videos
   // start muted so page 1 can autoplay on load; the first click/keypress
